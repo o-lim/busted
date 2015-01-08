@@ -29,46 +29,46 @@ dependencies = {
   'mediator_lua >= 1.1-3',
 }
 build = {
-  type = 'builtin',
-  modules = {
-    ['busted.core']                           = 'busted/core.lua',
-    ['busted.context']                        = 'busted/context.lua',
-    ['busted.environment']                    = 'busted/environment.lua',
-    ['busted.compatibility']                  = 'busted/compatibility.lua',
-    ['busted.done']                           = 'busted/done.lua',
-    ['busted.runner']                         = 'busted/runner.lua',
-    ['busted.status']                         = 'busted/status.lua',
-    ['busted.init']                           = 'busted/init.lua',
-
-    ['busted.modules.configuration_loader']   = 'busted/modules/configuration_loader.lua',
-    ['busted.modules.luacov']                 = 'busted/modules/luacov.lua',
-    ['busted.modules.test_file_loader']       = 'busted/modules/test_file_loader.lua',
-    ['busted.modules.output_handler_loader']  = 'busted/modules/output_handler_loader.lua',
-
-    ['busted.modules.files.lua']              = 'busted/modules/files/lua.lua',
-    ['busted.modules.files.moonscript']       = 'busted/modules/files/moonscript.lua',
-    ['busted.modules.files.terra']            = 'busted/modules/files/terra.lua',
-
-    ['busted.outputHandlers.base']            = 'busted/outputHandlers/base.lua',
-    ['busted.outputHandlers.utfTerminal']     = 'busted/outputHandlers/utfTerminal.lua',
-    ['busted.outputHandlers.plainTerminal']   = 'busted/outputHandlers/plainTerminal.lua',
-    ['busted.outputHandlers.TAP']             = 'busted/outputHandlers/TAP.lua',
-    ['busted.outputHandlers.json']            = 'busted/outputHandlers/json.lua',
-    ['busted.outputHandlers.junit']           = 'busted/outputHandlers/junit.lua',
-    ['busted.outputHandlers.sound']           = 'busted/outputHandlers/sound.lua',
-
-    ['busted.languages.en']                   = 'busted/languages/en.lua',
-    ['busted.languages.ar']                   = 'busted/languages/ar.lua',
-    ['busted.languages.de']                   = 'busted/languages/de.lua',
-    ['busted.languages.fr']                   = 'busted/languages/fr.lua',
-    ['busted.languages.ja']                   = 'busted/languages/ja.lua',
-    ['busted.languages.nl']                   = 'busted/languages/nl.lua',
-    ['busted.languages.ru']                   = 'busted/languages/ru.lua',
-    ['busted.languages.th']                   = 'busted/languages/th.lua',
-    ['busted.languages.ua']                   = 'busted/languages/ua.lua',
-    ['busted.languages.zh']                   = 'busted/languages/zh.lua',
-  },
+  type = 'make',
   install = {
+    lua = {
+      ['busted.core']                           = 'busted/core.lua',
+      ['busted.context']                        = 'busted/context.lua',
+      ['busted.environment']                    = 'busted/environment.lua',
+      ['busted.compatibility']                  = 'busted/compatibility.lua',
+      ['busted.done']                           = 'busted/done.lua',
+      ['busted.runner']                         = 'busted/runner.lua',
+      ['busted.status']                         = 'busted/status.lua',
+      ['busted.init']                           = 'busted/init.lua',
+
+      ['busted.modules.configuration_loader']   = 'busted/modules/configuration_loader.lua',
+      ['busted.modules.luacov']                 = 'busted/modules/luacov.lua',
+      ['busted.modules.test_file_loader']       = 'busted/modules/test_file_loader.lua',
+      ['busted.modules.output_handler_loader']  = 'busted/modules/output_handler_loader.lua',
+
+      ['busted.modules.files.lua']              = 'busted/modules/files/lua.lua',
+      ['busted.modules.files.moonscript']       = 'busted/modules/files/moonscript.lua',
+      ['busted.modules.files.terra']            = 'busted/modules/files/terra.lua',
+
+      ['busted.outputHandlers.base']            = 'busted/outputHandlers/base.lua',
+      ['busted.outputHandlers.utfTerminal']     = 'busted/outputHandlers/utfTerminal.lua',
+      ['busted.outputHandlers.plainTerminal']   = 'busted/outputHandlers/plainTerminal.lua',
+      ['busted.outputHandlers.TAP']             = 'busted/outputHandlers/TAP.lua',
+      ['busted.outputHandlers.json']            = 'busted/outputHandlers/json.lua',
+      ['busted.outputHandlers.junit']           = 'busted/outputHandlers/junit.lua',
+      ['busted.outputHandlers.sound']           = 'busted/outputHandlers/sound.lua',
+
+      ['busted.languages.en']                   = 'busted/languages/en.lua',
+      ['busted.languages.ar']                   = 'busted/languages/ar.lua',
+      ['busted.languages.de']                   = 'busted/languages/de.lua',
+      ['busted.languages.fr']                   = 'busted/languages/fr.lua',
+      ['busted.languages.ja']                   = 'busted/languages/ja.lua',
+      ['busted.languages.nl']                   = 'busted/languages/nl.lua',
+      ['busted.languages.ru']                   = 'busted/languages/ru.lua',
+      ['busted.languages.th']                   = 'busted/languages/th.lua',
+      ['busted.languages.ua']                   = 'busted/languages/ua.lua',
+      ['busted.languages.zh']                   = 'busted/languages/zh.lua',
+    },
     bin = {
       ['busted'] = 'bin/busted'
     }

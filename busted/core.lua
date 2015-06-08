@@ -32,7 +32,7 @@ local function errortype(obj)
   return 'error'
 end
 
-local function hasToString(obj)
+local function has_tostring(obj)
   return type(obj) == 'string' or (debug.getmetatable(obj) or {}).__tostring
 end
 
@@ -78,7 +78,7 @@ return function()
 
   function busted.rewriteMessage(element, message, trace)
     local file = busted.getFile(element)
-    local msg = hasToString(message) and tostring(message)
+    local msg = has_tostring(message) and tostring(message)
     msg = msg or (message ~= nil and pretty.write(message) or 'Nil error')
     msg = (file.rewriteMessage and file.rewriteMessage(file.name, msg) or msg)
 
@@ -136,7 +136,7 @@ return function()
     local level = level or 1
     local _, emsg = pcall(throw, msg, rawlevel or level+2)
     local e = { message = emsg }
-    setmetatable(e, hasToString(msg) and failureMt or failureMtNoString)
+    setmetatable(e, has_tostring(msg) and failureMt or failureMtNoString)
     throw(e, rawlevel or level+1)
   end
 

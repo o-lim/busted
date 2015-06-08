@@ -32,7 +32,7 @@ local function init(busted)
     element.env.finally = function(fn) finally = fn end
     element.env.pending = function(msg) busted.pending(msg) end
 
-    local pass, ancestor = block.execAll('before_each', parent, true)
+    local pass, ancestor = block.exec_all('before_each', parent, true)
 
     if pass then
       local status = busted.status('success')
@@ -48,7 +48,7 @@ local function init(busted)
       busted.safe_publish('it', { 'test', 'end' }, element, parent, tostring(status))
     end
 
-    block.dexecAll('after_each', ancestor, true)
+    block.dexec_all('after_each', ancestor, true)
   end
 
   local pending = function(element)

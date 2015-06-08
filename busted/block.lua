@@ -38,11 +38,11 @@ return function(busted)
     return unpack(ret)
   end
 
-  function block.execAllOnce(descriptor, current, err)
+  function block.exec_all_once(descriptor, current, err)
     local parent = busted.context.parent(current)
 
     if parent then
-      local success = block.execAllOnce(descriptor, parent)
+      local success = block.exec_all_once(descriptor, parent)
       if not success then
         return success
       end
@@ -69,11 +69,11 @@ return function(busted)
     return success
   end
 
-  function block.execAll(descriptor, current, propagate, err)
+  function block.exec_all(descriptor, current, propagate, err)
     local parent = busted.context.parent(current)
 
     if propagate and parent then
-      local success, ancestor = block.execAll(descriptor, parent, propagate)
+      local success, ancestor = block.exec_all(descriptor, parent, propagate)
       if not success then
         return success, ancestor
       end
@@ -91,7 +91,7 @@ return function(busted)
     return success, current
   end
 
-  function block.dexecAll(descriptor, current, propagate, err)
+  function block.dexec_all(descriptor, current, propagate, err)
     local parent = busted.context.parent(current)
     local list = current[descriptor] or {}
 
@@ -104,7 +104,7 @@ return function(busted)
     end
 
     if propagate and parent then
-      if not block.dexecAll(descriptor, parent, propagate) then
+      if not block.dexec_all(descriptor, parent, propagate) then
         success = nil
       end
     end
@@ -112,22 +112,22 @@ return function(busted)
   end
 
   function block.lazySetup(element, err)
-    return block.execAllOnce('lazy_setup', element, err)
+    return block.exec_all_once('lazy_setup', element, err)
   end
 
   function block.lazyTeardown(element, err)
     if element.lazy_setup and element.lazy_setup.success ~= nil then
-      block.dexecAll('lazy_teardown', element, nil, err)
+      block.dexec_all('lazy_teardown', element, nil, err)
       element.lazy_setup.success = nil
     end
   end
 
   function block.setup(element, err)
-      return block.execAll('strict_setup', element, nil, err)
+      return block.exec_all('strict_setup', element, nil, err)
   end
 
   function block.teardown(element, err)
-      return block.dexecAll('strict_teardown', element, nil, err)
+      return block.dexec_all('strict_teardown', element, nil, err)
   end
 
   function block.execute(descriptor, element)

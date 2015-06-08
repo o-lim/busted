@@ -41,7 +41,7 @@ return function(busted)
       end
       busted.safe_publish('suite', { 'suite', 'end' }, root, i, runs)
 
-      if busted.skipAll then
+      if busted.skip_all then
         break
       end
     end

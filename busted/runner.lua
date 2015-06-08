@@ -92,7 +92,7 @@ return function(options)
 
   busted.subscribe({ 'error' }, function(element, parent, message)
     errors = errors + 1
-    busted.skipAll = quitOnError
+    busted.skip_all = quitOnError
     return nil, true
   end)
 
@@ -102,7 +102,7 @@ return function(options)
     else
       errors = errors + 1
     end
-    busted.skipAll = quitOnError
+    busted.skip_all = quitOnError
     return nil, true
   end)
 

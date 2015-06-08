@@ -70,7 +70,7 @@ return function()
     end
 
     local skipOnError = function()
-      return nil, not busted.skipAll
+      return nil, not busted.skip_all
     end
 
     local applyFilter = function(descriptors, name, fn)

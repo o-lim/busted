@@ -1,6 +1,6 @@
 return function()
   local function filter(busted, options)
-    local getFullName = function(name)
+    local function get_full_name(name)
       local parent = busted.context.get()
       local names = { name }
 
@@ -13,50 +13,50 @@ return function()
       return table.concat(names, ' ')
     end
 
-    local hasTag = function(name, tag)
+    local function has_tag(name, tag)
       local found = name:find('#' .. tag)
       return (found ~= nil)
     end
 
-    local filterExcludeTags = function(name)
-      for i, tag in pairs(options.excludeTags) do
-        if hasTag(name, tag) then
+    local function filter_exclude_tags(name)
+      for i, tag in pairs(options.exclude_tags) do
+        if has_tag(name, tag) then
           return nil, false
         end
       end
       return nil, true
     end
 
-    local filterTags = function(name)
-      local fullname = getFullName(name)
+    local function filter_tags(name)
+      local fullname = get_full_name(name)
       for i, tag in pairs(options.tags) do
-        if hasTag(fullname, tag) then
+        if has_tag(fullname, tag) then
           return nil, true
         end
       end
       return nil, (#options.tags == 0)
     end
 
-    local filterOutNames = function(name)
-      for _, filter in pairs(options.filterOut) do
-        if getFullName(name):find(filter) ~= nil then
+    local function filter_out_names(name)
+      for _, filter in pairs(options.filter_out) do
+        if get_full_name(name):find(filter) ~= nil then
           return nil, false
         end
       end
       return nil, true
     end
 
-    local filterNames = function(name)
+    local function filter_names(name)
       for _, filter in pairs(options.filter) do
-        if getFullName(name):find(filter) ~= nil then
+        if get_full_name(name):find(filter) ~= nil then
           return nil, true
         end
       end
       return nil, (#options.filter == 0)
     end
 
-    local printNameOnly = function(name, fn, trace)
-      local fullname = getFullName(name)
+    local function print_name_only(name, fn, trace)
+      local fullname = get_full_name(name)
       if trace and trace.what == 'Lua' then
         print(trace.short_src .. ':' .. trace.currentline .. ': ' .. fullname)
       else
@@ -65,15 +65,15 @@ return function()
       return nil, false
     end
 
-    local ignoreAll = function()
+    local function ignore_all()
       return nil, false
     end
 
-    local skipOnError = function()
+    local function skip_on_error()
       return nil, not busted.skip_all
     end
 
-    local applyFilter = function(descriptors, name, fn)
+    local function apply_filter(descriptors, name, fn)
       if options[name] and options[name] ~= '' then
         for _, descriptor in ipairs(descriptors) do
           busted.subscribe({ 'register', descriptor }, fn, { priority = 1 })
@@ -82,24 +82,24 @@ return function()
     end
 
     if options.list then
-      busted.subscribe({ 'suite', 'start' }, ignoreAll, { priority = 1 })
-      busted.subscribe({ 'suite', 'end' }, ignoreAll, { priority = 1 })
-      applyFilter({ 'setup', 'teardown', 'before_each', 'after_each' }, 'list', ignoreAll)
-      applyFilter({ 'lazy_setup', 'lazy_teardown' }, 'list', ignoreAll)
-      applyFilter({ 'strict_setup', 'strict_teardown' }, 'list', ignoreAll)
-      applyFilter({ 'it', 'pending' }, 'list', printNameOnly)
+      busted.subscribe({ 'suite', 'start' }, ignore_all, { priority = 1 })
+      busted.subscribe({ 'suite', 'end' }, ignore_all, { priority = 1 })
+      apply_filter({ 'setup', 'teardown', 'before_each', 'after_each' }, 'list', ignore_all)
+      apply_filter({ 'lazy_setup', 'lazy_teardown' }, 'list', ignore_all)
+      apply_filter({ 'strict_setup', 'strict_teardown' }, 'list', ignore_all)
+      apply_filter({ 'it', 'pending' }, 'list', print_name_only)
     end
 
-    applyFilter({ 'lazy_setup', 'lazy_teardown' }, 'nokeepgoing', skipOnError)
-    applyFilter({ 'strict_setup', 'strict_teardown' }, 'nokeepgoing', skipOnError)
-    applyFilter({ 'setup', 'teardown', 'before_each', 'after_each' }, 'nokeepgoing', skipOnError)
-    applyFilter({ 'file', 'describe', 'it', 'pending' }, 'nokeepgoing', skipOnError)
+    apply_filter({ 'lazy_setup', 'lazy_teardown' }, 'nokeepgoing', skip_on_error)
+    apply_filter({ 'strict_setup', 'strict_teardown' }, 'nokeepgoing', skip_on_error)
+    apply_filter({ 'setup', 'teardown', 'before_each', 'after_each' }, 'nokeepgoing', skip_on_error)
+    apply_filter({ 'file', 'describe', 'it', 'pending' }, 'nokeepgoing', skip_on_error)
 
     -- The following filters are applied in reverse order
-    applyFilter({ 'it', 'pending' }            , 'filter'     , filterNames      )
-    applyFilter({ 'describe', 'it', 'pending' }, 'filterOut'  , filterOutNames   )
-    applyFilter({ 'it', 'pending' }            , 'tags'       , filterTags       )
-    applyFilter({ 'describe', 'it', 'pending' }, 'excludeTags', filterExcludeTags)
+    apply_filter({ 'it', 'pending' }            , 'filter'      , filter_names       )
+    apply_filter({ 'describe', 'it', 'pending' }, 'filter_out'  , filter_out_names   )
+    apply_filter({ 'it', 'pending' }            , 'tags'        , filter_tags        )
+    apply_filter({ 'describe', 'it', 'pending' }, 'exclude_tags', filter_exclude_tags)
   end
 
   return filter

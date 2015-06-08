@@ -130,9 +130,9 @@ return function(options)
   -- Set up tag and test filter options
   local filterLoaderOptions = {
     tags = cliArgs.tags,
-    excludeTags = cliArgs['exclude-tags'],
+    exclude_tags = cliArgs['exclude-tags'],
     filter = cliArgs.filter,
-    filterOut = cliArgs['filter-out'],
+    filter_out = cliArgs['filter-out'],
     list = cliArgs.list,
     nokeepgoing = not cliArgs['keep-going'],
   }

@@ -2,13 +2,13 @@ local path = require 'pl.path'
 
 describe('Tests command-line interface', function()
   it('default options', function()
-    local defaultOutput = 'default_output_handler'
+    local default_output = 'default_output_handler'
     local lpath = './src/?.lua;./src/?/?.lua;./src/?/init.lua'
     local cpath = path.is_windows and './csrc/?.dll;./csrc/?/?.dll;' or './csrc/?.so;./csrc/?/?.so;'
-    local cli = require 'busted.modules.cli'({ batch = true, defaultOutput = defaultOutput })
+    local cli = require 'busted.modules.cli'({ batch = true, default_output = default_output })
     local args = cli:parse({})
-    assert.is_equal(defaultOutput, args.o)
-    assert.is_equal(defaultOutput, args.output)
+    assert.is_equal(default_output, args.o)
+    assert.is_equal(default_output, args.output)
     assert.is_same({'spec'}, args.ROOT)
     assert.is_equal('./', args.C)
     assert.is_equal('./', args.directory)
@@ -310,13 +310,13 @@ end)
 
 describe('Tests using .busted tasks', function()
   it('default options', function()
-    local defaultOutput = 'default_output_handler'
+    local default_output = 'default_output_handler'
     local lpath = './src/?.lua;./src/?/?.lua;./src/?/init.lua'
     local cpath = path.is_windows and './csrc/?.dll;./csrc/?/?.dll;' or './csrc/?.so;./csrc/?/?.so;'
-    local cli = require 'busted.modules.cli'({ batch = true, defaultOutput = defaultOutput })
+    local cli = require 'busted.modules.cli'({ batch = true, default_output = default_output })
     local args = cli:parse({ '--directory=spec/.hidden' })
-    assert.is_equal(defaultOutput, args.o)
-    assert.is_equal(defaultOutput, args.output)
+    assert.is_equal(default_output, args.o)
+    assert.is_equal(default_output, args.output)
     assert.is_same({'specs'}, args.ROOT)
     assert.is_equal('spec/.hidden', args.C)
     assert.is_equal('spec/.hidden', args.directory)
@@ -367,13 +367,13 @@ describe('Tests using .busted tasks', function()
   end)
 
   it('default options with --config-file option', function()
-    local defaultOutput = 'default_output_handler'
+    local default_output = 'default_output_handler'
     local lpath = './src/?.lua;./src/?/?.lua;./src/?/init.lua'
     local cpath = path.is_windows and './csrc/?.dll;./csrc/?/?.dll;' or './csrc/?.so;./csrc/?/?.so;'
-    local cli = require 'busted.modules.cli'({ batch = true, defaultOutput = defaultOutput })
+    local cli = require 'busted.modules.cli'({ batch = true, default_output = default_output })
     local args = cli:parse({ '--config-file', 'spec/.hidden/.busted' })
-    assert.is_equal(defaultOutput, args.o)
-    assert.is_equal(defaultOutput, args.output)
+    assert.is_equal(default_output, args.o)
+    assert.is_equal(default_output, args.output)
     assert.is_same({'specs'}, args.ROOT)
     assert.is_equal('./', args.C)
     assert.is_equal('./', args.directory)
@@ -424,7 +424,7 @@ describe('Tests using .busted tasks', function()
   end)
 
   it('load configuration options', function()
-    local cli = require 'busted.modules.cli'({ batch = true, defaultOutput = defaultOutput })
+    local cli = require 'busted.modules.cli'({ batch = true, default_output = default_output })
     local args = cli:parse({ '--directory=spec/.hidden', '--run=test' })
     assert.is_equal('_test%.lua$', args.pattern)
     assert.is_same({'tests'}, args.ROOT)
@@ -436,7 +436,7 @@ describe('Tests using .busted tasks', function()
   end)
 
   it('load configuration options and override with command-line', function()
-    local cli = require 'busted.modules.cli'({ batch = true, defaultOutput = defaultOutput })
+    local cli = require 'busted.modules.cli'({ batch = true, default_output = default_output })
     local args = cli:parse({ '--directory=spec/.hidden', '--run=test', '-t', 'tag1', '-p', 'patt', '--loaders=moonscript' })
     assert.is_equal('patt', args.pattern)
     assert.is_same({'tag1'}, args.tags)

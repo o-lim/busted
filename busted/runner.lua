@@ -10,7 +10,7 @@ return function(options)
   if loaded then return else loaded = true end
 
   local options = options or {}
-  options.defaultOutput = term.isatty(io.stdout) and 'utfTerminal' or 'plainTerminal'
+  options.default_output = term.isatty(io.stdout) and 'utfTerminal' or 'plainTerminal'
 
   local busted = require 'busted.core'()
 
@@ -115,7 +115,7 @@ return function(options)
     arguments = cliArgs.Xoutput
   }
 
-  local outputHandler = outputHandlerLoader(busted, cliArgs.output, outputHandlerOptions, options.defaultOutput)
+  local outputHandler = outputHandlerLoader(busted, cliArgs.output, outputHandlerOptions, options.default_output)
   outputHandler:subscribe(outputHandlerOptions)
 
   if cliArgs['enable-sound'] then

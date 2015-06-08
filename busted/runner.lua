@@ -109,9 +109,9 @@ return function(options)
   -- Set up output handler to listen to events
   local output_handler_options = {
     verbose = cliargs.verbose,
-    suppressPending = cliargs['suppress-pending'],
+    suppress_pending = cliargs['suppress-pending'],
     language = cliargs.lang,
-    deferPrint = cliargs['defer-print'],
+    defer_print = cliargs['defer-print'],
     arguments = cliargs.Xoutput
   }
 

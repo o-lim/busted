@@ -10,7 +10,7 @@ return function(options)
   local errorDot =  '*'
   local pendingDot = '.'
 
-  local pendingDescription = function(pending)
+  local function pending_description(pending)
     local name = pending.name
 
     local string = s('output.pending') .. ' -> ' ..
@@ -27,7 +27,7 @@ return function(options)
     return string
   end
 
-  local failureMessage = function(failure)
+  local function failure_message(failure)
     local string = failure.randomseed and ('Random seed: ' .. failure.randomseed .. '\n') or ''
     if type(failure.message) == 'string' then
       string = string .. failure.message
@@ -40,7 +40,7 @@ return function(options)
     return string
   end
 
-  local failureDescription = function(failure, isError)
+  local function failure_description(failure, isError)
     local string = s('output.failure') .. ' -> '
     if isError then
       string = s('output.error') .. ' -> '
@@ -48,14 +48,14 @@ return function(options)
 
     if not failure.element.trace or not failure.element.trace.short_src then
       string = string ..
-        failureMessage(failure) .. '\n' ..
+        failure_message(failure) .. '\n' ..
         failure.name
     else
       string = string ..
         failure.element.trace.short_src .. ' @ ' ..
         failure.element.trace.currentline .. '\n' ..
         failure.name .. '\n' ..
-        failureMessage(failure)
+        failure_message(failure)
     end
 
     if options.verbose and failure.trace and failure.trace.traceback then
@@ -65,11 +65,11 @@ return function(options)
     return string
   end
 
-  local statusString = function()
-    local successString = s('output.success_plural')
-    local failureString = s('output.failure_plural')
-    local pendingString = s('output.pending_plural')
-    local errorString = s('output.error_plural')
+  local status_string = function()
+    local success_string = s('output.success_plural')
+    local failure_string = s('output.failure_plural')
+    local pending_string = s('output.pending_plural')
+    local error_string = s('output.error_plural')
 
     local ms = handler.getDuration()
     local successes = handler.successesCount
@@ -78,40 +78,40 @@ return function(options)
     local errors = handler.errorsCount
 
     if successes == 0 then
-      successString = s('output.success_zero')
+      success_string = s('output.success_zero')
     elseif successes == 1 then
-      successString = s('output.success_single')
+      success_string = s('output.success_single')
     end
 
     if failures == 0 then
-      failureString = s('output.failure_zero')
+      failure_string = s('output.failure_zero')
     elseif failures == 1 then
-      failureString = s('output.failure_single')
+      failure_string = s('output.failure_single')
     end
 
     if pendings == 0 then
-      pendingString = s('output.pending_zero')
+      pending_string = s('output.pending_zero')
     elseif pendings == 1 then
-      pendingString = s('output.pending_single')
+      pending_string = s('output.pending_single')
     end
 
     if errors == 0 then
-      errorString = s('output.error_zero')
+      error_string = s('output.error_zero')
     elseif errors == 1 then
-      errorString = s('output.error_single')
+      error_string = s('output.error_single')
     end
 
     local formattedTime = ('%.6f'):format(ms):gsub('([0-9])0+$', '%1')
 
-    return successes .. ' ' .. successString .. ' / ' ..
-      failures .. ' ' .. failureString .. ' / ' ..
-      errors .. ' ' .. errorString .. ' / ' ..
-      pendings .. ' ' .. pendingString .. ' : ' ..
+    return successes .. ' ' .. success_string .. ' / ' ..
+      failures .. ' ' .. failure_string .. ' / ' ..
+      errors .. ' ' .. error_string .. ' / ' ..
+      pendings .. ' ' .. pending_string .. ' : ' ..
       formattedTime .. ' ' .. s('output.seconds')
   end
 
   handler.testEnd = function(element, parent, status, debug)
-    if not options.deferPrint then
+    if not options.defer_print then
       local string = successDot
 
       if status == 'pending' then
@@ -139,21 +139,21 @@ return function(options)
 
   handler.suiteEnd = function()
     print('')
-    print(statusString())
+    print(status_string())
 
     for i, pending in pairs(handler.pendings) do
       print('')
-      print(pendingDescription(pending))
+      print(pending_description(pending))
     end
 
     for i, err in pairs(handler.failures) do
       print('')
-      print(failureDescription(err))
+      print(failure_description(err))
     end
 
     for i, err in pairs(handler.errors) do
       print('')
-      print(failureDescription(err, true))
+      print(failure_description(err, true))
     end
 
     return nil, true

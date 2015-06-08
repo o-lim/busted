@@ -13,7 +13,7 @@ return function()
   }
 
   handler.cancelOnPending = function(element, parent, status)
-    return not ((element.descriptor == 'pending' or status == 'pending') and handler.options.suppressPending)
+    return not ((element.descriptor == 'pending' or status == 'pending') and handler.options.suppress_pending)
   end
 
   handler.subscribe = function(handler, options)

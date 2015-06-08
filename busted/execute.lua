@@ -36,7 +36,7 @@ return function(busted)
         if block.setup(root) then
           busted.execute()
         end
-        block.lazyTeardown(root)
+        block.lazy_teardown(root)
         block.teardown(root)
       end
       busted.safe_publish('suite', { 'suite', 'end' }, root, i, runs)

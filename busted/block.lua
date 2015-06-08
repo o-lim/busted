@@ -115,7 +115,7 @@ return function(busted)
     return block.exec_all_once('lazy_setup', element, err)
   end
 
-  function block.lazyTeardown(element, err)
+  function block.lazy_teardown(element, err)
     if element.lazy_setup and element.lazy_setup.success ~= nil then
       block.dexec_all('lazy_teardown', element, nil, err)
       element.lazy_setup.success = nil
@@ -150,7 +150,7 @@ return function(busted)
         busted.execute(element)
       end
 
-      block.lazyTeardown(element)
+      block.lazy_teardown(element)
       block.teardown(element)
     end
   end

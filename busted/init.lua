@@ -21,7 +21,7 @@ local function init(busted)
     local parent = busted.context.parent(element)
     local finally
 
-    if not block.lazySetup(parent) then
+    if not block.lazy_setup(parent) then
       -- skip test if any setup failed
       return
     end

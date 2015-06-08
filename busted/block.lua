@@ -111,7 +111,7 @@ return function(busted)
     return success
   end
 
-  function block.lazySetup(element, err)
+  function block.lazy_setup(element, err)
     return block.exec_all_once('lazy_setup', element, err)
   end
 

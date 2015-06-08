@@ -2,7 +2,7 @@ local path = require 'pl.path'
 local has_moon, moonscript = pcall(require, 'moonscript')
 
 return function()
-  local loadHelper = function(busted, helper, options)
+  local function load_helper(busted, helper, options)
     local old_arg = arg
     local success, err = pcall(function()
       arg = options.arguments
@@ -22,5 +22,5 @@ return function()
     end
   end
 
-  return loadHelper
+  return load_helper
 end

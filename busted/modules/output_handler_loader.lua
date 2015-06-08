@@ -2,7 +2,7 @@ local path = require 'pl.path'
 local has_moon, moonscript = pcall(require, 'moonscript')
 
 return function()
-  local loadOutputHandler = function(busted, output, options, defaultOutput)
+  local function load_output_handler(busted, output, options, default_output)
     local handler
 
     local success, err = pcall(function()
@@ -21,11 +21,11 @@ return function()
 
     if not success then
       busted.publish({ 'error', 'output' }, { descriptor = 'output', name = output }, nil, err, {})
-      handler = require('busted.outputHandlers.' .. defaultOutput)
+      handler = require('busted.outputHandlers.' .. default_output)
     end
 
     return handler(options)
   end
 
-  return loadOutputHandler
+  return load_output_handler
 end

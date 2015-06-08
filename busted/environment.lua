@@ -4,25 +4,25 @@ return function(context)
 
   local environment = {}
 
-  local function getEnv(self, key)
+  local function getenv(self, key)
     if not self then return nil end
     return
       self.env and self.env[key] or
-      getEnv(context.parent(self), key) or
+      getenv(context.parent(self), key) or
       _G[key]
   end
 
-  local function setEnv(self, key, value)
+  local function setenv(self, key, value)
     if not self.env then self.env = {} end
     self.env[key] = value
   end
 
   local function __index(self, key)
-    return getEnv(context.get(), key)
+    return getenv(context.get(), key)
   end
 
   local function __newindex(self, key, value)
-    setEnv(context.get(), key, value)
+    setenv(context.get(), key, value)
   end
 
   local env = setmetatable({}, { __index=__index, __newindex=__newindex })

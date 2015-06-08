@@ -5,18 +5,18 @@ local path = require 'pl.path'
 local pretty = require 'pl.pretty'
 local throw = error
 
-local failureMt = {
+local failure_mt = {
   __index = {},
   __tostring = function(e) return tostring(e.message) end,
   __type = 'failure'
 }
 
-local failureMtNoString = {
+local failure_mt_nostring = {
   __index = {},
   __type = 'failure'
 }
 
-local pendingMt = {
+local pending_mt = {
   __index = {},
   __tostring = function(p) return p.message end,
   __type = 'pending'
@@ -24,9 +24,9 @@ local pendingMt = {
 
 local function errortype(obj)
   local mt = debug.getmetatable(obj)
-  if mt == failureMt or mt == failureMtNoString then
+  if mt == failure_mt or mt == failure_mt_nostring then
     return 'failure'
-  elseif mt == pendingMt then
+  elseif mt == pending_mt then
     return 'pending'
   end
   return 'error'
@@ -136,13 +136,13 @@ return function()
     local level = level or 1
     local _, emsg = pcall(throw, msg, rawlevel or level+2)
     local e = { message = emsg }
-    setmetatable(e, has_tostring(msg) and failureMt or failureMtNoString)
+    setmetatable(e, has_tostring(msg) and failure_mt or failure_mt_nostring)
     throw(e, rawlevel or level+1)
   end
 
   function busted.pending(msg)
     local p = { message = msg }
-    setmetatable(p, pendingMt)
+    setmetatable(p, pending_mt)
     throw(p)
   end
 

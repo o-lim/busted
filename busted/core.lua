@@ -190,12 +190,12 @@ return function()
     return status:success()
   end
 
-  function busted.exportApi(key, value)
+  function busted.export_api(key, value)
     busted.api[key] = value
   end
 
   function busted.export(key, value)
-    busted.exportApi(key, value)
+    busted.export_api(key, value)
     environment.set(key, value)
   end
 

@@ -58,7 +58,7 @@ return function()
 
   busted.status = require 'busted.status'
 
-  function busted.getTrace(element, level, msg)
+  function busted.get_trace(element, level, msg)
     level = level or  3
 
     local thisdir = path.dirname(debug.getinfo(1, 'Sl').source)
@@ -72,19 +72,19 @@ return function()
     info.traceback = debug.traceback('', level)
     info.message = msg
 
-    local file = busted.getFile(element)
-    return file.getTrace(file.name, info)
+    local file = busted.get_file(element)
+    return file.get_trace(file.name, info)
   end
 
-  function busted.rewriteMessage(element, message, trace)
-    local file = busted.getFile(element)
+  function busted.rewrite_message(element, message, trace)
+    local file = busted.get_file(element)
     local msg = has_tostring(message) and tostring(message)
     msg = msg or (message ~= nil and pretty.write(message) or 'Nil error')
-    msg = (file.rewriteMessage and file.rewriteMessage(file.name, msg) or msg)
+    msg = (file.rewrite_message and file.rewrite_message(file.name, msg) or msg)
 
-    local hasFileLine = msg:match('^[^\n]-:%d+: .*')
-    if not hasFileLine then
-      local trace = trace or busted.getTrace(element, 3, message)
+    local has_file_line = msg:match('^[^\n]-:%d+: .*')
+    if not has_file_line then
+      local trace = trace or busted.get_trace(element, 3, message)
       local fileline = trace.short_src .. ':' .. trace.currentline .. ': '
       msg = fileline .. msg
     end
@@ -104,7 +104,7 @@ return function()
     return mediator:removeSubscriber(...)
   end
 
-  function busted.getFile(element)
+  function busted.get_file(element)
     local parent = busted.context.parent(element)
 
     while parent do
@@ -112,16 +112,16 @@ return function()
         local file = parent.file[1]
         return {
           name = file.name,
-          getTrace = file.run.getTrace,
-          rewriteMessage = file.run.rewriteMessage
+          get_trace = file.run.get_trace,
+          rewrite_message = file.run.rewrite_message
         }
       end
 
       if parent.descriptor == 'file' then
         return {
           name = parent.name,
-          getTrace = parent.run.getTrace,
-          rewriteMessage = parent.run.rewriteMessage
+          get_trace = parent.run.get_trace,
+          rewrite_message = parent.run.rewrite_message
         }
       end
 
@@ -168,8 +168,8 @@ return function()
 
     local ret = { xpcall(run, function(msg)
       status = errortype(msg)
-      trace = busted.getTrace(element, 3, msg)
-      message = busted.rewriteMessage(element, msg, trace)
+      trace = busted.get_trace(element, 3, msg)
+      message = busted.rewrite_message(element, msg, trace)
     end) }
 
     if not ret[1] then
@@ -227,7 +227,7 @@ return function()
 
       local ctx = busted.context.get()
       if busted.context.parent(ctx) then
-        trace = busted.getTrace(ctx, 3, name)
+        trace = busted.get_trace(ctx, 3, name)
       end
 
       local publish = function(f)

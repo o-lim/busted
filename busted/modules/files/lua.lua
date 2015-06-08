@@ -2,23 +2,23 @@ local path = require 'pl.path'
 
 local ret = {}
 
-local getTrace =  function(filename, info)
+local function get_trace(filename, info)
   local index = info.traceback:find('\n%s*%[C]')
   info.traceback = info.traceback:sub(1, index)
   return info, false
 end
 
-ret.match = function(busted, filename)
+function ret.match(busted, filename)
   return path.extension(filename) == '.lua'
 end
 
 
-ret.load = function(busted, filename)
+function ret.load(busted, filename)
   local file, err = loadfile(filename)
   if not file then
     busted.publish({ 'error', 'file' }, { descriptor = 'file', name = filename }, nil, err, {})
   end
-  return file, getTrace
+  return file, get_trace
 end
 
 return ret

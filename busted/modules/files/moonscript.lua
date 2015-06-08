@@ -7,7 +7,7 @@ end)
 local _cache = {}
 
 -- find the line number of `pos` chars into fname
-local lookup_line = function(fname, pos)
+local function lookup_line(fname, pos)
   if not _cache[fname] then
     local f = io.open(fname)
     _cache[fname] = f:read('*a')
@@ -17,7 +17,7 @@ local lookup_line = function(fname, pos)
   return util.pos_to_line(_cache[fname], pos)
 end
 
-local rewrite_linenumber = function(fname, lineno)
+local function rewrite_linenumber(fname, lineno)
   local tbl = line_tables['@' .. fname]
   if fname and tbl then
     for i = lineno, 0 ,-1 do
@@ -30,14 +30,14 @@ local rewrite_linenumber = function(fname, lineno)
   return lineno
 end
 
-local rewrite_filename = function(filename)
+local function rewrite_filename(filename)
   -- sometimes moonscript gives files like [string "./filename.moon"], so
   -- we'll chop it up to only get the filename.
   return filename:match('string "(.+)"') or filename
 end
 
-local rewrite_traceback = function(fname, trace)
-  local rewrite_one = function(line, pattern, sub)
+local function rewrite_traceback(fname, trace)
+  local function rewrite_one(line, pattern, sub)
     if line == nil then return '' end
 
     local fname, lineno = line:match(pattern)
@@ -68,7 +68,7 @@ end
 
 local ret = {}
 
-local getTrace =  function(filename, info)
+local function get_trace(filename, info)
   local index = info.traceback:find('\n%s*%[C]')
   info.traceback = info.traceback:sub(1, index)
 
@@ -80,7 +80,7 @@ local getTrace =  function(filename, info)
   return info
 end
 
-local rewriteMessage = function(filename, message)
+local function rewrite_message(filename, message)
   local fname, line, msg = message:match('^([^\n]-):(%d+): (.*)')
   if not fname then
     return message
@@ -92,17 +92,17 @@ local rewriteMessage = function(filename, message)
   return fname .. ':' .. tostring(line) .. ': ' .. msg
 end
 
-ret.match = function(busted, filename)
+function ret.match(busted, filename)
   return ok and path.extension(filename) == '.moon'
 end
 
 
-ret.load = function(busted, filename)
+function ret.load(busted, filename)
   local file, err = moonscript.loadfile(filename)
   if not file then
     busted.publish({ 'error', 'file' }, { descriptor = 'file', name = filename }, nil, err, {})
   end
-  return file, getTrace, rewriteMessage
+  return file, get_trace, rewrite_message
 end
 
 return ret

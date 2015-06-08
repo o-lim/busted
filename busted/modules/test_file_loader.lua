@@ -66,12 +66,12 @@ return function(busted, loaders)
     end
 
     for i, filename in ipairs(file_list) do
-      local test_file, getTrace, rewriteMessage = load_test_file(busted, filename)
+      local test_file, get_trace, rewrite_message = load_test_file(busted, filename)
 
       if test_file then
         local file = setmetatable({
-          getTrace = getTrace,
-          rewriteMessage = rewriteMessage
+          get_trace = get_trace,
+          rewrite_message = rewrite_message
         }, {
           __call = test_file
         })

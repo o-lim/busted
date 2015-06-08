@@ -28,7 +28,7 @@ local function init(busted)
 
     if not element.env then element.env = {} end
 
-    block.rejectAll(element)
+    block.reject_all(element)
     element.env.finally = function(fn) finally = fn end
     element.env.pending = function(msg) busted.pending(msg) end
 

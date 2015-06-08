@@ -24,7 +24,7 @@ return function(busted)
     end
   end
 
-  function block.rejectAll(element)
+  function block.reject_all(element)
     block.reject('randomize', element)
     for descriptor, _ in pairs(busted.executors) do
       block.reject(descriptor, element)
@@ -33,7 +33,7 @@ return function(busted)
 
   local function exec(descriptor, element)
     if not element.env then element.env = {} end
-    block.rejectAll(element)
+    block.reject_all(element)
     local ret = { busted.safe(descriptor, element.run, element) }
     return unpack(ret)
   end

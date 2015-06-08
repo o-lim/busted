@@ -36,7 +36,7 @@ local function has_tostring(obj)
   return type(obj) == 'string' or (debug.getmetatable(obj) or {}).__tostring
 end
 
-local function isCallable(obj)
+local function is_callable(obj)
   return type(obj) == 'function' or (debug.getmetatable(obj) or {}).__call
 end
 
@@ -155,7 +155,7 @@ return function()
   end
 
   function busted.wrap(callable)
-    if isCallable(callable) then
+    if is_callable(callable) then
       -- prioritize __call if it exists, like in files
       environment.wrap((debug.getmetatable(callable) or {}).__call or callable)
     end
@@ -209,7 +209,7 @@ return function()
       executors[alias] = executor
       eattributes[alias] = attributes
     else
-      if executor ~= nil and not isCallable(executor) then
+      if executor ~= nil and not is_callable(executor) then
         attributes = executor
         executor = nil
       end

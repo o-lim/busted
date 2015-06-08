@@ -1,6 +1,6 @@
 return function()
   -- Function to initialize luacov if available
-  local loadLuaCov = function()
+  local function load_luacov()
     local result, luacov = pcall(require, 'luacov.runner')
 
     if not result then
@@ -18,5 +18,5 @@ return function()
     table.insert(luacov.configuration.exclude, 'pl%.')
   end
 
-  return loadLuaCov
+  return load_luacov
 end
